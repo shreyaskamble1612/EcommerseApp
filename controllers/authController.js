@@ -9,7 +9,7 @@ export const registerController = async (req,res) => {
         if(!name || !email || !password || !phone || !address){
             return res.status(400).send({
                 success:false,
-                message:'All fields are required'
+                message:'All fields should be filled'
             });
         }
 
