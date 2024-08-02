@@ -23,3 +23,20 @@ export const requireSignIn = async (req,res,next) => {
         })
     }
 }
+
+export const isAdmin =async (req,res,next) => {
+    try{
+        const user = await userModel.findById(req.user._id);
+        if(user.role !== 1){
+            return res.status(400).send({
+                success:false,
+                message:'Unauthorised access'
+            })
+        }else{
+            next()
+        }
+    }catch(error){
+        console.log(error)
+    }
+
+}

@@ -55,12 +55,10 @@ export const loginController = async (req,res) => {
         const {email,password} = req.body;
         //validation
         if(!email || !password){
-            return res.status(400).send({
+            return res.status(404).send({
                 success:false,
-                message:'All fields are required'
-
+                message:'All fields are required truely'
             })
-
         }
         //check if user exists
         const user = await userModel.findOne({
@@ -71,23 +69,23 @@ export const loginController = async (req,res) => {
         if(!user){
             return res.status(400).send({
                 success:false,
-                message:'Invalid credentialas'
+                message:'user not found'
 
             })
         }
         //compare password
         const isMatch = await comparePassword(password,user.password);
         if(!isMatch){
-            return res.status(400).send({
+            return res.status(200).send({
                 success:false,
                 message:'Invalid credentials'
 
             })
+
         }
         //generate token
         const token = jwt.sign({
-            id:user._id,
-            role:user.role
+            _id:user._id
             
         },process.env.JWT_SECRET,{
             expiresIn:process.env.JWT_EXPIRE
@@ -95,7 +93,13 @@ export const loginController = async (req,res) => {
         res.status(200).send({
             success:true,
             message:'Login successful',
-            token
+            user: {
+                name:user.name,
+                email:user.email,
+                phone:user.phone,
+                address:user.address
+            },
+            token,
         })
     }catch(error){
         console.log(error)
@@ -107,4 +111,14 @@ export const loginController = async (req,res) => {
     }
 }
 
-//1:10:10
+
+export const testController = async (req,res) => {
+    try{
+        res.send("Protected Routes");
+
+    }catch(error){
+        console.log(error)
+        res.send({error})
+
+    }
+}

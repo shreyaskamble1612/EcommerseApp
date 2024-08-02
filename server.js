@@ -29,7 +29,7 @@ app.get('/',(req,res)=>{
 })
 
 //PORT
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5000;
 
 // run listen
 app.listen(port,()=>{
