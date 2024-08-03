@@ -61,13 +61,11 @@ export const loginController = async (req,res) => {
             })
         }
         //check if user exists
-        const user = await userModel.findOne({
-            email
-        });
+        const user = await userModel.findOne({email});
         
         //user not found
         if(!user){
-            return res.status(400).send({
+            return res.status(404).send({
                 success:false,
                 message:'user not found'
 
@@ -84,12 +82,7 @@ export const loginController = async (req,res) => {
 
         }
         //generate token
-        const token = jwt.sign({
-            _id:user._id
-            
-        },process.env.JWT_SECRET,{
-            expiresIn:process.env.JWT_EXPIRE
-        });
+        const token = jwt.sign({_id:user._id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRE});
         res.status(200).send({
             success:true,
             message:'Login successful',
@@ -112,7 +105,7 @@ export const loginController = async (req,res) => {
 }
 
 
-export const testController = async (req,res) => {
+export const testController = (req,res) => {
     try{
         res.send("Protected Routes");
 
