@@ -16,4 +16,3 @@ router.post('/login',loginController);
 router.get('/test',requireSignIn,isAdmin,testController);
 export default router;
 
-// 1:26:00
